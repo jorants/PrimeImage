@@ -9,3 +9,12 @@ Usage:
 or:
 	
 	python2 find_prime.py [Image path] {width} {height}
+
+
+Requirements:
+
+ - Python 2
+ - PIL
+ - imagemagick with convert executable
+
+
