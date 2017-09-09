@@ -15,7 +15,7 @@ if len(sys.argv)<3:
     print "    or",sys.argv[0],"[Image path] {width} {height}"
     exit()
 
-#open image and get real size    
+#open image and get real size
 basefn = sys.argv[1]
 img = Image.open(basefn)
 w,h = img.size
@@ -29,16 +29,16 @@ if len(sys.argv) ==3:
     #makes taller
     W2 = max(filter(lambda x: x<=math.sqrt(SIZE * (w/float(h))),(reduce(list.__add__,  ([i, SIZE//i] for i in range(1, int(SIZE**0.5) + 1) if SIZE % i == 0)))))
     H2 = SIZE / W2
-    
+
     ratio1 = (float(W1)*h)/(H1*w)
     ratio2 = (float(W2)*h)/(H2*w)
-    
+
     #prefere wider over taller, so the images is squished horezontally in the end and letters come out taller
     if ratio1< 1.1 / ratio2:
         W,H = W1,H1
     else:
         W,H = W2,H2
-        
+
     print "Size:", W, H
 
 elif len(sys.argv) >3:
@@ -47,12 +47,12 @@ elif len(sys.argv) >3:
 # how much distorion did we get from rounding to a divisor?
 ratio = (float(W)*h)/(H*w)
 
-    
+
 def get_prime_string(img,W,H):
     # creates a string of 1 and 8 from an image
     w,h = img.size
     img = img.resize((W,H), Image.ANTIALIAS)
-    
+
     img = img.convert('L')
     avr = sum(img.getdata()) / (W*H)
     bw = img.point(lambda x: 0 if x<avr else 255,'1')
@@ -65,9 +65,9 @@ def flip(ps):
     ran_pos = random.randrange(len(ps))
     c = ps[ran_pos]
     if c == "1":
-       n = 7
+       n = "7"
     else:
-       n = random.choice(["0","9","6","4","5","2","3"])      
+       n = random.choice(["0","9","6","4","5","2","3"])
     newps = ps[:ran_pos-1] + n + ps[ran_pos:]
     return newps
 
@@ -86,7 +86,7 @@ def make_prime(ps):
         P = flip(ps)
         if prime.test_prime(int(P),50):
             return P
-        
+
 
 def make_pdf(ps,W,H,fn="output.pdf"):
     #use reportlab to generate a pdf with the prime in it
@@ -111,7 +111,7 @@ def make_pdf(ps,W,H,fn="output.pdf"):
 
     c.drawString(0, 8, end)
     c.save()
-    
+
 
 def to_scaled_image(ratio,fn="output.pdf",outfn = "tmp.png"):
     # convert a previously generated pdf to an image with the right proportions
@@ -128,7 +128,7 @@ def to_scaled_image(ratio,fn="output.pdf",outfn = "tmp.png"):
             res = img.resize((int(w/ratio+.5),h), Image.ANTIALIAS)
             res.save(outfn)
 
-if __name__ == "__main__":            
+if __name__ == "__main__":
     ps = get_prime_string(img,W,H)
     print_prime(ps,W,H)
     res = make_prime(ps)
